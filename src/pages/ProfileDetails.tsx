@@ -20,9 +20,9 @@ const ProfileDetails = () => {
     email: "",
     username: "",
     bio: "",
-    location: "",
-    occupation: "",
-    interests: "",
+    collegename: "",
+    yearofstudy: "",
+    coursename: "",
     phone: "",
   });
 
@@ -42,9 +42,9 @@ const ProfileDetails = () => {
   email: data.email || "",
   username: data.username || "",
   bio: data.bio || "",              // <-- fill these from backend response
-  location: data.location || "",
-  occupation: data.occupation || "",
-  interests: data.interests || "",
+  collegename: data.collegename || "",
+  yearofstudy: data.yearofstudy || "",
+  coursename: data.coursename || "",
   phone: data.phone || "",
         });
       } catch (error) {
@@ -72,9 +72,9 @@ const ProfileDetails = () => {
           username: profileData.username,
           phone: profileData.phone,
           bio: profileData.bio,
-          location: profileData.location,
-          occupation: profileData.occupation,
-          interests: profileData.interests,
+          collegename: profileData.collegename,
+          yearofstudy: profileData.yearofstudy,
+          coursename: profileData.coursename,
         },
         {
           headers: {
@@ -153,7 +153,7 @@ const ProfileDetails = () => {
               <Input
                 id="location"
                 name="location"
-                value={profileData.location}
+                value={profileData.collegename}
                 onChange={handleInputChange}
                 disabled={!isEditing}
               />
@@ -165,7 +165,7 @@ const ProfileDetails = () => {
               <Input
                 id="occupation"
                 name="occupation"
-                value={profileData.occupation}
+                value={profileData.yearofstudy}
                 onChange={handleInputChange}
                 disabled={!isEditing}
               />
@@ -175,7 +175,7 @@ const ProfileDetails = () => {
               <Input
                 id="interests"
                 name="interests"
-                value={profileData.interests}
+                value={profileData.coursename}
                 onChange={handleInputChange}
                 disabled={!isEditing}
               />

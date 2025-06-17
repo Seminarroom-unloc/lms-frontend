@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -17,14 +18,11 @@ const AssignmentSubmission = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
     if (courseId && moduleId && assignmentId) {
-      // Fetch assignment data from the backend
-      axios.get(`http://localhost:8080/api/courses/${courseId}/modules/${moduleId}/assignments/${assignmentId}`)
-        .then(response => {
-          setAssignment(response.data); // Set fetched assignment data
-        })
-        .catch(error => {
+      axios
+        .get(`http://localhost:8080/api/courses/${courseId}/modules/${moduleId}/assignments/${assignmentId}`)
+        .then((response) => setAssignment(response.data))
+        .catch((error) => {
           console.error("Error fetching assignment:", error);
         });
     }
@@ -39,15 +37,86 @@ const AssignmentSubmission = () => {
       });
     }
   };
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Assignment submitted",
-      description: "Your assignment has been submitted successfully!",
-    });
+
+    if (!uploadedFile) {
+      toast({
+        title: "No file selected",
+        description: "Please upload a file before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", uploadedFile);
+    if (linkSubmission) {
+      formData.append("link", linkSubmission);
+    }
+
+    try {
+      // await axios.post(
+      //   `http://localhost:8080/api/courses/${courseId}/modules/${moduleId}/assignments/upload/${assignmentId}`,
+      //   formData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
+
+      // toast({
+      //   title: "Assignment submitted",
+      //   description: "Your assignment has been submitted and uploaded to S3!",
+      // });
+
+      // setUploadedFile(null);
+      // setLinkSubmission('');
+      await axios.post(
+  `http://localhost:8080/api/courses/${courseId}/modules/${moduleId}/assignments/upload/${assignmentId}`,
+  formData,
+  {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  }
+);
+
+// ✅ Also update assignment progress in the database
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+const progress = await axios.get(`http://localhost:8080/api/progress/${user.id}/${moduleId}`);
+
+// Reuse previous values, only update assignment
+await axios.post('http://localhost:8080/api/progress', {
+  userId: user.id,
+  moduleId,
+  readingMaterial: progress.data.readingMaterial || false,
+  video: progress.data.video || false,
+  quiz: progress.data.quiz || false,
+  assignment: true, // ✅ mark this true now
+});
+
+
+toast({
+  title: "Assignment submitted",
+  description: "Your assignment has been submitted and progress has been updated!",
+});
+
+setUploadedFile(null);
+setLinkSubmission('');
+
+    } catch (error) {
+      console.error("Upload failed:", error);
+      toast({
+        title: "Upload failed",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
-  // If the assignment data is not yet fetched, show a loading message
   if (!assignment) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -58,9 +127,13 @@ const AssignmentSubmission = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-12">
+      {/* Header */}
       <div className="pt-20 bg-purple-700 text-white">
         <div className="container mx-auto px-4 py-8 max-w-7xl">
-          <Link to={`/module/${courseId}/${moduleId}`} className="flex items-center text-sm mb-4 hover:underline text-white/80">
+          <Link
+            to={`/module/${courseId}/${moduleId}`}
+            className="flex items-center text-sm mb-4 hover:underline text-white/80"
+          >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back to Module
           </Link>
@@ -79,8 +152,11 @@ const AssignmentSubmission = () => {
           </div>
         </div>
       </div>
+
+      {/* Content */}
       <div className="container mx-auto px-4 py-6 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Instructions */}
           <div className="lg:col-span-2">
             <Card className="mb-8">
               <CardHeader>
@@ -98,11 +174,11 @@ const AssignmentSubmission = () => {
 
                 <h3 className="text-lg font-medium mb-3">Description</h3>
                 <p className="mb-6 text-muted-foreground">{assignment.instruction}</p>
-
               </CardContent>
             </Card>
           </div>
 
+          {/* Submission Panel */}
           <div className="lg:col-span-1">
             <Card>
               <CardHeader>
@@ -123,7 +199,6 @@ const AssignmentSubmission = () => {
                               {uploadedFile.name}
                             </div>
                           )}
-
                           <input
                             id="file-upload"
                             type="file"

@@ -10,7 +10,7 @@ import NotFound from "./pages/NotFound";
 import MainLayout from "./components/MainLayout";
 import Assignments from "./pages/Assignments";
 import ReadingMaterials from "./pages/ReadingMaterials";
-import Quizzes from "./pages/Quizzes";
+import Quizzes from "./pages/QuizAttempt";
 import Discussions from "./pages/Discussions";
 import Course from "./pages/Course";
 import ModuleDetails from "./pages/ModuleDetails";
@@ -49,9 +49,10 @@ const App = () => (
           <Route element={<MainLayout />}>
             <Route path="/index" element={<Index />} />
             <Route path="/assignments" element={<Assignments />} />
+            <Route path="/i" element={<Quizzes />} />
             {/* Updated route: reading-materials expects moduleId param */}
             <Route path="/reading-materials/:moduleId" element={<ReadingMaterialsWrapper />} />
-            <Route path="/quizzes" element={<Quizzes />} />
+        
             <Route path="/discussions" element={<Discussions />} />
             <Route path="/course/:id" element={<Course />} />
             <Route path="/module/:courseId/:moduleId" element={<ModuleDetails />} />
