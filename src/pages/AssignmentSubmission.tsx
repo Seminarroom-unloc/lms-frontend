@@ -20,7 +20,7 @@ const AssignmentSubmission = () => {
     window.scrollTo(0, 0);
     if (courseId && moduleId && assignmentId) {
       axios
-        .get(`http://localhost:8080/api/courses/${courseId}/modules/${moduleId}/assignments/${assignmentId}`)
+        .get(`${process.env.REACT_APP_API_URL}/api/courses/${courseId}/modules/${moduleId}/assignments/${assignmentId}`)
         .then((response) => setAssignment(response.data))
         .catch((error) => {
           console.error("Error fetching assignment:", error);
@@ -75,7 +75,7 @@ const AssignmentSubmission = () => {
       // setUploadedFile(null);
       // setLinkSubmission('');
       await axios.post(
-  `http://localhost:8080/api/courses/${courseId}/modules/${moduleId}/assignments/upload/${assignmentId}`,
+  `${process.env.REACT_APP_API_URL}/api/courses/${courseId}/modules/${moduleId}/assignments/upload/${assignmentId}`,
   formData,
   {
     headers: {
@@ -86,10 +86,10 @@ const AssignmentSubmission = () => {
 
 // ✅ Also update assignment progress in the database
 const user = JSON.parse(localStorage.getItem('user') || '{}');
-const progress = await axios.get(`http://localhost:8080/api/progress/${user.id}/${moduleId}`);
+const progress = await axios.get(`${process.env.REACT_APP_API_URL}/api/progress/${user.id}/${moduleId}`);
 
 // Reuse previous values, only update assignment
-await axios.post('http://localhost:8080/api/progress', {
+await axios.post(`${process.env.REACT_APP_API_URL}/api/progress`, {
   userId: user.id,
   moduleId,
   readingMaterial: progress.data.readingMaterial || false,

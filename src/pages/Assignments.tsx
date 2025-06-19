@@ -13,7 +13,7 @@ const Assignments = () => {
 
   // Fetch assignments data from the backend
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/courses/${courseId}/modules/${moduleId}/assignments`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/courses/${courseId}/modules/${moduleId}/assignments`)
       .then(response => {
         setAssignments(response.data); // Set fetched assignments data
       })

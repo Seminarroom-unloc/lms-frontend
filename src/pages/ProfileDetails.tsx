@@ -31,7 +31,7 @@ const ProfileDetails = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/user/me", {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/user/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,7 +65,7 @@ const ProfileDetails = () => {
   const handleSave = async () => {
     try {
       await axios.put(
-        "http://localhost:8080/api/user/update",
+        `${process.env.REACT_APP_API_URL}/api/user/update`,
         {
           fullName: profileData.fullName,
           email: profileData.email,

@@ -40,14 +40,14 @@ const Course = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    axios.get(`http://localhost:8080/api/courses/${id}`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/courses/${id}`)
       .then(async response => {
         const courseData = response.data;
 
         const moduleProgresses = await Promise.all(
           courseData.modules.map(async (mod: any) => {
             try {
-              const res = await axios.get(`http://localhost:8080/api/progress/${user.id}/${mod.id}`, {
+              const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/progress/${user.id}/${mod.id}`, {
                 headers: { Authorization: `Bearer ${token}` }
               });
               const progress = (

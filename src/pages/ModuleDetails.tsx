@@ -53,7 +53,7 @@ const [viewResult, setViewResult] = useState(false);
 
   useEffect(() => {
     if (!userId || !moduleId) return;
-    axios.get(`http://localhost:8080/api/progress/${userId}/${moduleId}`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/progress/${userId}/${moduleId}`)
       .then((res) => {
         setCompleted({
           readingMaterial: res.data.readingMaterial ? [1] : [],
@@ -75,7 +75,7 @@ const [viewResult, setViewResult] = useState(false);
       assignment: completed.assignment.length > 0,
       quiz: completed.quiz,
     };
-    axios.post('http://localhost:8080/api/progress', payload)
+    axios.post(`${process.env.REACT_APP_API_URL}/api/progress`, payload)
       .then(() => console.log('Progress saved successfully'))
       .catch((err) => console.error('Error saving progress:', err));
   }, [userId, moduleId, completed]);
@@ -91,13 +91,13 @@ const [viewResult, setViewResult] = useState(false);
 
   useEffect(() => {
     if (!courseId || !moduleId) return;
-    axios.get(`http://localhost:8080/api/courses/${courseId}/modules/${moduleId}`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/courses/${courseId}/modules/${moduleId}`)
       .then((res) => setModule(res.data));
-    axios.get(`http://localhost:8080/api/modules/${moduleId}/reading-materials`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/modules/${moduleId}/reading-materials`)
       .then((res) => setReadingMaterials(res.data));
-    axios.get(`http://localhost:8080/api/modules/${moduleId}/video-lectures`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/modules/${moduleId}/video-lectures`)
       .then((res) => setVideoLinks(res.data));
-    axios.get(`http://localhost:8080/api/courses/${courseId}/modules/${moduleId}/assignments`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/courses/${courseId}/modules/${moduleId}/assignments`)
       .then((res) => setAssignments(res.data));
   }, [courseId, moduleId]);
 
