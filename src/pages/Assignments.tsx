@@ -13,7 +13,7 @@ const Assignments = () => {
 
   // Fetch assignments data from the backend
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/api/courses/${courseId}/modules/${moduleId}/assignments`)
+    axios.get(`https://lms-backend-abdd.onrender.com/api/courses/${courseId}/modules/${moduleId}/assignments`)
       .then(response => {
         setAssignments(response.data); // Set fetched assignments data
       })

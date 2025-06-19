@@ -10,7 +10,7 @@ const Index = () => {
     window.scrollTo(0, 0);
 
     // Fetch courses from the backend
-    axios.get('http://localhost:8080/api/courses')
+    axios.get('https://lms-backend-abdd.onrender.com/api/courses')
       .then(response => {
         setCourses(response.data); // Set the fetched courses data
       })
