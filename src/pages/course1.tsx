@@ -40,14 +40,14 @@ const Course = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    axios.get(`https://lms-backend-abdd.onrender.com/api/courses/${id}`)
+    axios.get(`https://seminarroom.tech/api/courses/${id}`)
       .then(async response => {
         const courseData = response.data;
 
         const moduleProgresses = await Promise.all(
           courseData.modules.map(async (mod: any) => {
             try {
-              const res = await axios.get(`https://lms-backend-abdd.onrender.com/api/progress/${user.id}/${mod.id}`, {
+              const res = await axios.get(`https://seminarroom.tech/api/progress/${user.id}/${mod.id}`, {
                 headers: { Authorization: `Bearer ${token}` }
               });
               const progress = (

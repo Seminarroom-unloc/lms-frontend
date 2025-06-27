@@ -22,7 +22,7 @@ const SignUp = () => {
     const password = (document.getElementById("password") as HTMLInputElement).value;
 
     try {
-      const response = await fetch(`https://lms-backend-abdd.onrender.com/api/auth/signup`, {
+      const response = await fetch(`https://seminarroom.tech/api/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

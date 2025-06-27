@@ -31,7 +31,7 @@ const ProfileDetails = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`https://lms-backend-abdd.onrender.com/api/user/me`, {
+        const response = await axios.get(`https://seminarroom.tech/api/user/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,7 +65,7 @@ const ProfileDetails = () => {
   const handleSave = async () => {
     try {
       await axios.put(
-        `https://lms-backend-abdd.onrender.com/api/user/update`,
+        `https://seminarroom.tech/api/user/update`,
         {
           fullName: profileData.fullName,
           email: profileData.email,
